@@ -17,7 +17,7 @@ services:
     networks:
       - proxy
   noip-updater:
-    image: crazymax/noip-updater:latest
+    image: ghcr.io/noipcom/noip-duc:latest
     container_name: noip-updater
     restart: unless-stopped
     env_file:
