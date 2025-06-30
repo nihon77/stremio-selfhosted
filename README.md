@@ -119,6 +119,23 @@ Se il tuo IP pubblico è dinamico, No-IP ti permette di associare un hostname ch
 > Riceverai un'email ogni 30 giorni per confermare **gratuitamente** che desideri mantenere attivo ciascun hostname.  
 > Se **non li rinnovi**, gli hostname verranno disattivati e **non saranno più raggiungibili**.
 
+### 4. Creazione del gruppo ddnskey su No-IP
+Per aggiornare automaticamente gli hostname tramite client come noip-updater, è consigliato non usare direttamente la tua password dell’account, ma creare un gruppo chiamato ddnskey e generare una password dedicata all’aggiornamento IP.
+
+🧭 Passaggi:
+
+Vai su **Dashboard** → **DDNS & Remote Access** → **DDNS Keys**.
+Clicca su "Add Group" (Aggiungi gruppo).
+Dai al gruppo il nome: ddnskey_streamio (ad esempio).
+Associa al gruppo gli hostname che vuoi aggiornare (es. mammamia-xxx.ddns.net, mfp-xxx.ddns.net, ecc.).
+<img width="1667" alt="Screenshot 2025-06-30 at 17 47 52" src="https://github.com/user-attachments/assets/e6e7d3ad-7526-422e-8044-9fff95d4b88c" />
+
+Inserisci una nuova password sicura per questo gruppo (diversa da quella del tuo account principale) cliccando su **Add DDNS Key** e successivamente **Generate DDNS Key**.
+Salva.<img width="1666" alt="Screenshot 2025-06-30 at 17 54 11" src="https://github.com/user-attachments/assets/8bee49a0-8ebf-46e3-8d8e-0ba80039131a" /><img width="1666" alt="Screenshot 2025-06-30 at 17 54 11" src="https://github.com/user-attachments/assets/1344ee82-c504-4d2d-8c44-a248cd72e11a" />
+
+
+📌 Questa password sarà quella da inserire nel .env per il container noip-updater.
+
 ---
 
 ## 📦 Docker + Docker Compose
@@ -190,6 +207,64 @@ Se non l'hai già fatto, crea la rete che verrà utilizzata da Nginx Proxy Manag
 docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
+
+### 🛠️ Creazione dei file .env per MammaMia,Media Flow Proxy,StreamV e NoIp-Duc
+In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
+Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
+
+**1. .env per MammaMia**
+Per configurare il plugin MammaMia è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
+
+📄 Esempio: ./mammamia/.env
+```bash
+# File .env per il plugin mammamia
+TMDB_KEY=xxxxxxxxxxxxxxxx
+PROXY=["http://xxxxxxx-rotate:xxxxxxxxx@p.webshare.io:80"]
+FORWARDPROXY=http://xxxxxxx-rotate:xxxxxxxx@p.webshare.io:80/
+```
+
+**2. .env per Media Flow Proxy**
+Per configurare il modulo Media Flow Proxy è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
+
+📄 Esempio: ./mfp/.env
+```bash
+API_PASSWORD=password
+TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}
+```
+
+**3. .env per StreamV**
+Per configurare il plugin StreamV è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
+
+📄 Esempio: ./mfp/.env
+```bash
+TMDB_API_KEY="661c66b02d7ac1df5c797f3c992bafa5"
+MFP_PSW="testmm123"
+MFP_URL="https://mfp-w3studio.ddns.net"
+BOTHLINK=true
+```
+
+**4. .env per NoIp-Duc**
+Per configurare correttamente il client DDNS (come noip-updater), è necessario un file .env contenente le credenziali e gli hostname o gruppi associati al tuo account No-IP.
+
+📄 Esempio: ./noip-updater/.env
+```bash
+# File .env per il client DDNS con DDNS Key
+NOIP_USERNAME=DdnsKeyUser
+NOIP_PASSWORD=DdnsKeyPass
+NOIP_HOSTNAMES=all.ddnskey.com
+```
+
+🛑 Attenzione alla sicurezza: imposta i permessi del file .env in modo che sia leggibile solo dal tuo utente, ad esempio:
+
+```bash
+chmod 600 ./noip_updater/.env
+```
+
+🔁 Ricorda di sostituire:
+DdnsKeyUser → con l'indirizzo email del tuo account No-IP.
+DdnsKeyPass → con la password associata al gruppo ddnskey.
+NOIP_HOSTNAMES → con i tuoi hostname specifici separati da virgole (host1.ddns.net,host2.ddns.net) oppure all.ddnskey.com che vuol dire tutti gli hostname del gruppo.
+
 
 ### 🏗️ Build delle immagini e avvio dei container
 
