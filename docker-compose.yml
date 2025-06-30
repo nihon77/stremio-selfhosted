@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mediaflow_proxy:
+    build: https://github.com/mhdzumair/mediaflow-proxy.git
+    container_name: mediaflow_proxy
+    environment:
+      - API_PASSWORD=${API_PASSWORD}
+      - 'TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}'
+    restart: unless-stopped
+  mammamia:
+    build: ./mammamia
+    container_name: mammamia
+    environment:
+      - TMDB_KEY=${TMDB_KEY}
+      - PROXY=${PROXY}
+      - FORWARDPROXY=${FORWARDPROXY}
+    restart: unless-stopped 
+  #stremio-docker:
+  #  image: tsaridas/stremio-docker:latest
+  #  container_name: stremio-docker
+  #  ports:
+  #    - "8080:8080"
+  #    - "11470:11470"
+  #  environment:
+  #    - NO_CORS=1
+  #    - CASTING_DISABLED=1
+  #  restart: unless-stopped
+  streamv:
+    build: https://github.com/qwertyuiop8899/StreamV.git#main
+    container_name: streamv
+    environment:
+      - TMDB_API_KEY=${TMDB_API_KEY}
+      - MFP_URL=${MFP_URL}
+      - MFP_PSW=${MFP_PSW}
+      - BOTHLINK=${BOTHLINK}
+    restart: unless-stopped 
+    command: pnpm start
+  
+  #webstreamr:
+  #  build: https://github.com/webstreamr/webstreamr.git#main
+  #  container_name: webstreamr
+  #  restart: unless-stopped
+networks:
+  default:
+    external: true
+    name: ix-nginx-proxy-manager_default
