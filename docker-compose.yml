@@ -1,20 +1,42 @@
 version: '3.8'
 
 services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "8080:80"     # HTTP
+      - "8443:443"    # HTTPS
+      - "8181:81"     # NPM Admin UI
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+  noip-updater:
+    image: crazymax/noip-updater:latest
+    container_name: noip-updater
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - noip-data:/config
+    networks:
+      - proxy
   mediaflow_proxy:
     build: https://github.com/mhdzumair/mediaflow-proxy.git
     container_name: mediaflow_proxy
-    environment:
-      - API_PASSWORD=${API_PASSWORD}
-      - 'TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}'
+    env_file:
+      - ./mfp/.env
     restart: unless-stopped
   mammamia:
     build: ./mammamia
     container_name: mammamia
-    environment:
-      - TMDB_KEY=${TMDB_KEY}
-      - PROXY=${PROXY}
-      - FORWARDPROXY=${FORWARDPROXY}
+    env_file:
+      - ./mammamia/.env
     restart: unless-stopped 
   #stremio-docker:
   #  image: tsaridas/stremio-docker:latest
@@ -29,11 +51,8 @@ services:
   streamv:
     build: https://github.com/qwertyuiop8899/StreamV.git#main
     container_name: streamv
-    environment:
-      - TMDB_API_KEY=${TMDB_API_KEY}
-      - MFP_URL=${MFP_URL}
-      - MFP_PSW=${MFP_PSW}
-      - BOTHLINK=${BOTHLINK}
+    env_file:
+      - ./mammamia/.env
     restart: unless-stopped 
     command: pnpm start
   
@@ -41,7 +60,12 @@ services:
   #  build: https://github.com/webstreamr/webstreamr.git#main
   #  container_name: webstreamr
   #  restart: unless-stopped
+
+volumes:
+  npm-data:
+  npm-letsencrypt:
+  noip-data:
+
 networks:
-  default:
+  proxy:
     external: true
-    name: ix-nginx-proxy-manager_default
