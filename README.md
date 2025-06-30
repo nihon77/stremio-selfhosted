@@ -70,10 +70,10 @@ cd <nome-repo>
 
 | Servizio           | Porta interna | Descrizione                              |
 |--------------------|---------------|------------------------------------------|
-| **Mammamia**       | 5000          | Plugin personalizzato per Stremio        |
-| **Media Flow Proxy (MFP)** | 3000   | Proxy per streaming video                |
-| **StreamV**        | 4000          | Web player personalizzato (opzionale)    |
-| **Nginx Proxy Manager** | 80/443/81 | Reverse proxy + certificati Let's Encrypt |
+| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 5000          | Plugin personalizzato per Stremio        |
+| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 3000   | Proxy per streaming video                |
+| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 4000          | Web player personalizzato (opzionale)    |
+| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)** | 80/443/81 | Reverse proxy + certificati Let's Encrypt |
 | **No-IP DUC (Docker)** | —         | Aggiorna il DNS dinamicamente            |
 
 ---
