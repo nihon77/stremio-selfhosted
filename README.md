@@ -183,6 +183,14 @@ git clone https://github.com/tuo-utente/tuo-repo.git
 cd tuo-repo
 ```
 
+### 🌐 Crea la rete Docker esterna proxy
+Se non l'hai già fatto, crea la rete che verrà utilizzata da Nginx Proxy Manager e dagli altri container per comunicare tra loro:
+
+```bash
+docker network create proxy
+```
+>🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
+
 ### 🏗️ Build delle immagini e avvio dei container
 
 Per buildare le immagini (se definite tramite build: con URL GitHub) e avviare tutto in background:
