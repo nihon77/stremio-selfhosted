@@ -70,11 +70,14 @@ cd <nome-repo>
 
 | Servizio           | Porta interna | Descrizione                              |
 |--------------------|---------------|------------------------------------------|
-| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 8080          | Plugin personalizzato per Stremio        |
-| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 8888   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 7860          | Web player personalizzato (opzionale)    |
+| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 8080(*)          | Plugin personalizzato per Stremio        |
+| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 8888(*)   | Proxy per streaming video                |
+| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 7860(*)          | Web player personalizzato (opzionale)    |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)** | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
 | **No-IP DUC (Docker)** | —         | Aggiorna il DNS dinamicamente            |
+
+>ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
+Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
 
 ---
 
