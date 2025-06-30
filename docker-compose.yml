@@ -21,7 +21,7 @@ services:
     container_name: noip-updater
     restart: unless-stopped
     env_file:
-      - .env
+      - ./noip-updater/.env
     volumes:
       - noip-data:/config
     networks:
