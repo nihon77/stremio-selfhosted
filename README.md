@@ -39,7 +39,7 @@ Poiché molti provider Internet assegnano un **IP pubblico dinamico**, è necess
 
 Per accedere alle tue applicazioni da remoto, devi creare 3 hostname pubblici gratuiti su [No-IP.com](https://www.noip.com/).
 
-> ⚠️ Gli hostname devono essere univoci. Ti consigliamo di aggiungere un identificativo personale (es. il tuo nome o una sigla) per evitare conflitti.
+> ⚠️ Gli hostname devono essere univoci. Il mio consiglio è quello di aggiungere un identificativo personale (es. il tuo nome o una sigla) per evitare conflitti.
 
 #### Esempi di hostname personalizzati:
 - `mammamia-mario.ddns.net`
@@ -116,8 +116,8 @@ Se il tuo IP pubblico è dinamico, No-IP ti permette di associare un hostname ch
 > Andremo successivamente a configurare correttamente il client No-IP (DUC) per mantenerlo aggiornato.
 
 > 📩 **Nota importante:** No-IP, nel piano gratuito, richiede il **rinnovo manuale mensile degli hostname**.  
-> Riceverai un'email ogni 30 giorni per confermare che desideri mantenere attivo ciascun hostname.  
-> Se **non li rinnovi**, gli hostname verranno disattivati e non saranno più raggiungibili.
+> Riceverai un'email ogni 30 giorni per confermare **gratuitamente** che desideri mantenere attivo ciascun hostname.  
+> Se **non li rinnovi**, gli hostname verranno disattivati e **non saranno più raggiungibili**.
 
 ---
 
@@ -132,10 +132,10 @@ Se il tuo IP pubblico è dinamico, No-IP ti permette di associare un hostname ch
 sudo apt remove docker docker-engine docker.io containerd runc
 
 # 🔄 Aggiorna l’elenco dei pacchetti
-sudo apt install docker-compose-plugin
+sudo apt update
 
 # 📦 Installa i pacchetti richiesti per aggiungere il repository Docker
-sudo usermod -aG docker $USER
+sudo apt install -y ca-certificates curl gnupg lsb-release
 
 # 🗝️ Aggiungi la chiave GPG ufficiale di Docker
 sudo mkdir -p /etc/apt/keyrings
