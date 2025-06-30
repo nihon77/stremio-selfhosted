@@ -70,10 +70,10 @@ cd <nome-repo>
 
 | Servizio           | Porta interna | Descrizione                              |
 |--------------------|---------------|------------------------------------------|
-| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 5000          | Plugin personalizzato per Stremio        |
-| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 3000   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 4000          | Web player personalizzato (opzionale)    |
-| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)** | 80/443/81 | Reverse proxy + certificati Let's Encrypt |
+| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 8080          | Plugin personalizzato per Stremio        |
+| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 8888   | Proxy per streaming video                |
+| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 7860          | Web player personalizzato (opzionale)    |
+| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)** | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
 | **No-IP DUC (Docker)** | —         | Aggiorna il DNS dinamicamente            |
 
 ---
@@ -331,6 +331,8 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   - **Block Common Exploits**
   - **Websockets Support** (se necessario)
   - **Enable HSTS** (opzionale, aumenta la sicurezza)
+  ![image](https://github.com/user-attachments/assets/3ad4e778-81be-492f-9db1-3df5b51f1ed9)
+
 - **SSL tab:** seleziona:
   - **Enable SSL**
   - **Force SSL**
@@ -338,7 +340,10 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   - Spunta **Request a new SSL certificate from Let's Encrypt**
   - Accetta i Termini di servizio di Let’s Encrypt
   - Inserisci un indirizzo email valido per la registrazione SSL
-- **Nel tab advanced aggiungete queste configurazioni :
+  ![image](https://github.com/user-attachments/assets/6f0ef193-45d3-48c8-a6be-7711986f7054)
+
+- **Nel tab Advanced** aggiungete queste configurazioni :
+
   ```bash
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
@@ -346,6 +351,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   proxy_set_header X-Forwarded-Proto $scheme;
   proxy_pass_request_headers on;
   ```
+  ![image](https://github.com/user-attachments/assets/92fea31d-bb8c-49c5-a887-f3d5486c9f7f)
 
 Ripeti questa configurazione per ciascuno dei tre hostname con la rispettiva porta (ad esempio, `mfp-<tuo-id>.ddns.net` → porta `8001`, ecc.).
 
