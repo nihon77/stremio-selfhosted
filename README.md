@@ -5,12 +5,37 @@ Questo repository contiene istruzioni, configurazioni e suggerimenti per il self
 
 ---
 
-## 📢 Disclaimer  
+## 📢 Disclaimer (con un piccolo rant) 
 
 > Questo progetto è a scopo puramente educativo.  
 > L'utilizzo improprio di componenti che accedono a contenuti protetti da copyright potrebbe violare le leggi del tuo paese.  
 > **Usa questi strumenti solo per contenuti legalmente ottenuti.**  
 > L’autore non si assume responsabilità per eventuali usi illeciti.
+
+> ### 📣 Un pensiero personale:
+> Se stai usando Stremio con mille plugin e Real-Debrid, sappilo: non sei un pirata.
+> 
+>  **News flash: non sei un pirata, sei un leacher da salotto con le crocs ai piedi.**
+> 
+> Il pirata vero seedava, uploada, si faceva il port forwarding da solo e sniffava i peer con Wireshark. Tu clicchi e guardi. Comodo, eh? Ma zero gloria.
+> Stai "guardando gratis" sì, ma stai succhiando banda da server altrui senza restituire niente.
+
+> **Non dai nulla, non condividi nulla.**  
+
+> **Zero upload, zero sharing, zero rispetto per chi ci mette storage, tempo e skill.**
+> La tua banda in upload è più vuota della cartella “Download” su eMule nel 2025.
+> 
+> 💰 E poi ci sono quelli che bypassano la pubblicità sui siti di streaming…
+> Ma lo sai che quei 2 banner schifosi sono l’unica cosa che tiene in piedi quei siti?
+> Se li togli pure quelli, poi piangi perché non trovi più il film russo del 2003 sottotitolato in polacco.
+
+> 💀 Se sei uno che si è mai lamentato per la qualità di uno stream pirata...ti meriti il buffering perpetuo.
+
+> Se proprio vuoi vivere ai margini del sistema, almeno fallo con un po’ di dignità.
+> Usa i torrent. Condividi. Seeda. Rompiti la testa sui port forwarding.
+> E soprattutto: non fare il figo con gli script di qualcun altro.
+
+> “Steal with style. Share like it’s 2006. Respect the swarm.”
 
 ---
 
@@ -240,9 +265,9 @@ Per configurare il plugin StreamV è necessario configurare il relativo file .en
 
 📄 Esempio: ./mfp/.env
 ```bash
-TMDB_API_KEY="661c66b02d7ac1df5c797f3c992bafa5"
+TMDB_API_KEY="xxxxxxxxxxxxxxxx"
 MFP_PSW="testmm123"
-MFP_URL="https://mfp-w3studio.ddns.net"
+MFP_URL="https://mfp-mario.ddns.net"
 BOTHLINK=true
 ```
 
