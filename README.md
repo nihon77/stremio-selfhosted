@@ -321,11 +321,12 @@ Per permettere il corretto funzionamento di NPM e il rinnovo automatico dei cert
 ### 3. Configurazione dei proxy host in Nginx Proxy Manager
 
 Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi:
-
+- **accedi ad http://<ip-tuo-server>:8181** (al primo accesso le credenziali di default sono **Email: admin@example.com Password: changeme**. Vi verrà chiesto di modificarle)
+- **Dalla barra di menu selezionate **Hosts** → **Proxy Hosts** → **Add New Proxy**
 - **Domain Names:** inserisci l’hostname corrispondente (es. `mammamia-<tuo-id>.ddns.net`)
 - **Scheme:** `http`
-- **Forward Hostname / IP:** l’indirizzo locale del NAS (es. `127.0.0.1` o IP locale)
-- **Forward Port:** la porta interna dove l’app è in ascolto (es. `8000` per Mammamia)
+- **Forward Hostname / IP:** il mome del servizio cosi come configurato nel docker-compose ovvero mammmia, mediaflow_proxy e streamv
+- **Forward Port:** la porta interna dove l’app è in ascolto (es. `8080` per Mammamia, `8888` per mediaflow_proxy e `7860` per streamv)
 - Abilita le seguenti opzioni:
   - **Block Common Exploits**
   - **Websockets Support** (se necessario)
@@ -337,6 +338,14 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   - Spunta **Request a new SSL certificate from Let's Encrypt**
   - Accetta i Termini di servizio di Let’s Encrypt
   - Inserisci un indirizzo email valido per la registrazione SSL
+- **Nel tab advanced aggiungete queste configurazioni :
+  ```bash
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_pass_request_headers on;
+  ```
 
 Ripeti questa configurazione per ciascuno dei tre hostname con la rispettiva porta (ad esempio, `mfp-<tuo-id>.ddns.net` → porta `8001`, ecc.).
 
