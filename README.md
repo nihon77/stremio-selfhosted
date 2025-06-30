@@ -93,13 +93,13 @@ cd <nome-repo>
 
 ## 🔧 Componenti del progetto
 
-| Servizio           | Porta interna | Descrizione                              |
-|--------------------|---------------|------------------------------------------|
-| **[Mammamia](https://github.com/UrloMythus/MammaMia)**       | 8080(*)          | Plugin personalizzato per Stremio        |
-| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)** | 8888(*)   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**        | 7860(*)          | Web player personalizzato (opzionale)    |
-| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)** | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
-| **No-IP DUC (Docker)** | —         | Aggiorna il DNS dinamicamente            |
+| Servizio           | Nome Servizio Docker | Porta interna | Descrizione                              |
+|--------------------|----------------------|---------------|------------------------------------------|
+| **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
+| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
+| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
+| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
+| **[No-IP DUC (Docker)](https://github.com/noipcom/linux-update-client-docker/pkgs/container/noip-duc)** |noip-updater |—         | Aggiorna il DNS dinamicamente            |
 
 >ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
 Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
@@ -161,6 +161,42 @@ Salva.<img width="1666" alt="Screenshot 2025-06-30 at 17 54 11" src="https://git
 
 
 📌 Questa password sarà quella da inserire nel .env per il container noip-updater.
+
+---
+
+## 🌐 Configurazione DNS globale (Cloudflare, Quad9, ecc.)
+
+Se il tuo sistema utilizza systemd-resolved (come avviene per default in Ubuntu e derivati), non modificare direttamente il file /etc/resolv.conf, perché viene gestito automaticamente.
+
+1. Apri il file di configurazione:
+
+```bash
+sudo nano /etc/systemd/resolved.conf
+```
+
+2. Cerca la sezione [Resolve] e modifica come segue:
+
+```text
+[Resolve]
+DNS=1.1.1.1 1.0.0.1
+FallbackDNS=9.9.9.9
+DNSStubListener=yes
+```
+
+* 1.1.1.1 = Cloudflare
+* 9.9.9.9 = Quad9 (opzionale fallback)
+
+3. Riavvia il servizio:
+
+```bash
+sudo systemctl restart systemd-resolved
+```
+
+4. Verifica che i DNS siano attivi:
+
+```bash
+resolvectl status
+```
 
 ---
 
