@@ -110,8 +110,6 @@ Questo significa che i servizi **non sono accessibili dall’esterno se non tram
 
 Se il tuo IP pubblico è dinamico, No-IP ti permette di associare un hostname che si aggiorna automaticamente ogni volta che il tuo IP cambia. Ecco come fare:
 
----
-
 ### 1. Registrazione e login
 
 - Vai su [https://www.noip.com/](https://www.noip.com/)
@@ -244,7 +242,7 @@ Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env d
 Per configurare il plugin MammaMia è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./mammamia/.env
-```bash
+```text
 # File .env per il plugin mammamia
 TMDB_KEY=xxxxxxxxxxxxxxxx
 PROXY=["http://xxxxxxx-rotate:xxxxxxxxx@p.webshare.io:80"]
@@ -255,7 +253,7 @@ FORWARDPROXY=http://xxxxxxx-rotate:xxxxxxxx@p.webshare.io:80/
 Per configurare il modulo Media Flow Proxy è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./mfp/.env
-```bash
+```text
 API_PASSWORD=password
 TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}
 ```
@@ -264,9 +262,9 @@ TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv
 Per configurare il plugin StreamV è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./mfp/.env
-```bash
+```text
 TMDB_API_KEY="xxxxxxxxxxxxxxxx"
-MFP_PSW="testmm123"
+MFP_PSW="xxxxxxxxx"
 MFP_URL="https://mfp-mario.ddns.net"
 BOTHLINK=true
 ```
@@ -275,7 +273,7 @@ BOTHLINK=true
 Per configurare correttamente il client DDNS (come noip-updater), è necessario un file .env contenente le credenziali e gli hostname o gruppi associati al tuo account No-IP.
 
 📄 Esempio: ./noip-updater/.env
-```bash
+```text
 # File .env per il client DDNS con DDNS Key
 NOIP_USERNAME=DdnsKeyUser
 NOIP_PASSWORD=DdnsKeyPass
@@ -297,6 +295,7 @@ NOIP_HOSTNAMES → con i tuoi hostname specifici separati da virgole (host1.ddns
 ### 🏗️ Build delle immagini e avvio dei container
 
 Per buildare le immagini (se definite tramite build: con URL GitHub) e avviare tutto in background:
+
 ```bash
 docker compose up -d --build
 ```
@@ -372,7 +371,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
 
 - **Nel tab Advanced** aggiungete queste configurazioni :
 
-  ```bash
+  ```text
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
