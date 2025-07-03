@@ -127,7 +127,7 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
 - Premi **Add Domain**.
 - Nel campo **Current IP**, vedrai il tuo IP pubblico attuale (se errato, correggilo con quello giusto).
 
-
+<img width="1818" alt="Screenshot 2025-07-03 at 11 23 30" src="https://github.com/user-attachments/assets/f44d2ab9-ce39-43ff-b61a-1b204a266711" />
 
 ### 3. Ripeti per gli altri due hostname
 
@@ -136,6 +136,7 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
   - `mfp-mario.duckdns.org`
   - `streamv-mario.duckdns.org`
 
+<img width="1818" alt="Screenshot 2025-07-03 at 11 27 55" src="https://github.com/user-attachments/assets/9d70c20c-985e-410f-9638-a2bf7c7d9988" />
 
 ---
 
