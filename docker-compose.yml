@@ -57,15 +57,17 @@ services:
   streamv:
     build: https://github.com/qwertyuiop8899/StreamV.git#main
     container_name: streamv
+    env_file:
+      - ./streamv/.env
     restart: unless-stopped 
     command: pnpm start
     networks:
       - proxy
   aiostreams:
     build: https://github.com/Viren070/AIOStreams.git#main
-    container_name: aiostream
+    container_name: aiostreams
     env_file:
-      - ./aiostream/.env
+      - ./aiostreams/.env
     volumes:
       - aiostreams-data:/app/data
     restart: unless-stopped 
