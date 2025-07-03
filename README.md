@@ -71,6 +71,7 @@ Per accedere alle tue applicazioni da remoto, devi creare 3 hostname pubblici gr
 - `mfp-mario.duckdns.org`
 - `streamv-mario.duckdns.org`
 - `aiostreams-mario.duckdns.org`
+
 Puoi ovviamente scegliere qualsiasi nome, purché sia disponibile e facile da ricordare.
 
 Questi hostname punteranno sempre al tuo NAS anche se il tuo IP cambia.  
