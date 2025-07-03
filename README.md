@@ -99,7 +99,7 @@ cd <nome-repo>
 | **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
 | **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
-| **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns |—         | Aggiorna il DNS dinamicamente            |
+| **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
 
 >ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
 Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
@@ -246,7 +246,7 @@ docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
 
-### 🛠️ Creazione dei file .env per MammaMia,Media Flow Proxy,StreamV e NoIp-Duc
+### 🛠️ Creazione dei file .env per MammaMia,Media Flow Proxy,StreamV e docker-duckdns
 In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
 Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
 
@@ -337,9 +337,9 @@ docker compose up -d --build
 
 Per rendere accessibili le tue applicazioni web da internet in modo sicuro, useremo **Nginx Proxy Manager (NPM)**. Questo tool semplifica la gestione dei proxy inversi e automatizza l’ottenimento dei certificati SSL con Let’s Encrypt.
 
-### 1. Creazione dei tre hostname su No-IP
+### 1. Creazione dei tre hostname su DuckDns
 
-Assicurati di aver creato 3 hostname statici su [No-IP.com](https://www.noip.com/) che puntino al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent No-IP):
+Assicurati di aver creato 3 hostname statici su [**duckdns.org**](https://www.duckdns.org) che puntino al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns):
 
 - `mammamia-<tuo-id>.duckdns.org`
 - `mfp-<tuo-id>.duckdns.org`
