@@ -98,9 +98,9 @@ cd <nome-repo>
 | Servizio           | Nome Servizio Docker | Porta interna | Descrizione                              |
 |--------------------|----------------------|---------------|------------------------------------------|
 | **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
-| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
+| **[MediaFlow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
 | **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|streamv        | 7860(*)          | Web player personalizzato (opzionale)    |
-| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
+| **[Nginx Proxy Manager (NPM)](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
 | **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons e servizi debrid in un unico plugin|
 
