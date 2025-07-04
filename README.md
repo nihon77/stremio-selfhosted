@@ -1,7 +1,7 @@
 # stremio-selfhosted  
-**Stremio Stack con Mammamia, Media Flow Proxy e altro ancora**
+**Stremio Stack con Mammamia, MediaFlow Proxy e altro ancora**
 
-Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **media-flow-proxy**, **StreamV** e altri componenti opzionali.
+Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **mediaflow-proxy**, **StreamV**, **AIOStreams** e altri componenti opzionali.
 
 ---
 
@@ -60,7 +60,7 @@ Poiché molti provider Internet assegnano un **IP pubblico dinamico**, è necess
 > 🔁 Questo setup è fondamentale per permettere a Nginx Proxy Manager di ottenere e rinnovare automaticamente i certificati SSL tramite Let’s Encrypt.
 
 
-### 🔐 Creazione degli hostname su No-IP
+### 🔐 Creazione degli hostname su DuckDNS
 
 Per accedere alle tue applicazioni da remoto, devi creare 3 hostname pubblici gratuiti su [**duckdns.org**](https://www.duckdns.org).
 
@@ -99,17 +99,17 @@ cd <nome-repo>
 |--------------------|----------------------|---------------|------------------------------------------|
 | **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
 | **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
+| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|streamv        | 7860(*)          | Web player personalizzato (opzionale)    |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
-| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons and debrid services in un solo plugin|
+| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons e servizi debrid in un unico plugin|
 
 >ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
 Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
 
 ---
 
-## 🔧 Configurazione hostname statici con No-IP
+## 🔧 Configurazione hostname statici con DuckDNS
 
 Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname che si aggiorna automaticamente ogni volta che il tuo IP cambia. Ecco come fare:
 
@@ -132,9 +132,9 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
 
 <img width="1818" alt="Screenshot 2025-07-03 at 11 23 30" src="https://github.com/user-attachments/assets/f44d2ab9-ce39-43ff-b61a-1b204a266711" />
 
-### 3. Ripeti per gli altri due hostname
+### 3. Ripeti per gli altri tre hostname
 
-- Crea altri due hostname per:
+- Crea altri tre hostname per:
 
   - `mfp-mario.duckdns.org`
   - `streamv-mario.duckdns.org`
@@ -250,7 +250,7 @@ docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
 
-### 🛠️ Creazione dei file .env per MammaMia,Media Flow Proxy,StreamV,AIOStreams e docker-duckdns
+### 🛠️ Creazione dei file .env per MammaMia, MediaFlow Proxy, StreamV, AIOStreams e docker-duckdns
 In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
 Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
 
