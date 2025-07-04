@@ -135,7 +135,7 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
 - Premi **Add Domain**.
 - Nel campo **Current IP**, vedrai il tuo IP pubblico attuale (se errato, correggilo con quello giusto).
 
-<img width="1818" alt="Screenshot 2025-07-03 at 11 23 30" src="https://github.com/user-attachments/assets/f44d2ab9-ce39-43ff-b61a-1b204a266711" />
+<img width="1266" alt="Screenshot 2025-07-04 at 09 38 28" src="https://github.com/user-attachments/assets/7825a4dc-021e-49c7-908d-cf9d43cba0e0" />
 
 ---
 
@@ -382,10 +382,13 @@ Andremo a generare un certificato rilasciato da Let’s Encrypt, che Nginx Proxy
 - Imposta Propagation Seconds su 300 per sicurezza.
 - Accetta i Termini di Let’s Encrypt e clicca su Save.
 
+![image](https://github.com/user-attachments/assets/876629f3-8ac3-41cb-b493-20646f6209a8)
+
 >⚠️ NPM + DuckDNS a volte fallisce: alcuni utenti segnalano errori nel DNS challenge su DuckDNS . Tuttavia, molte guide e utenti confermano che con i settaggi corretti funziona.. a me ha funzionato... quindi provate, provate e provate :)
 
 Se il certificato viene correttamente generato dovreste vedere lo stato dello stesso a **Disabled**, questo perchè non risulta ancora associato a nessun Proxy Host.
 
+![image](https://github.com/user-attachments/assets/524c3b4a-cc57-42c1-a615-04fa69d57cce)
 
 #### Creazione Proxy Host
 Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi:
@@ -406,7 +409,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   - **Force SSL**
   - **HTTP/2 Support**
   - In **SSL certificate** il certificato creato in precedenza
-  ![image](https://github.com/user-attachments/assets/6f0ef193-45d3-48c8-a6be-7711986f7054)
+  ![image](https://github.com/user-attachments/assets/bfab6476-200f-455e-9213-c013ce89ad78)
 
 - **Nel tab Advanced** aggiungete queste configurazioni :
 
