@@ -276,7 +276,7 @@ Per configurare il plugin StreamV è necessario configurare il relativo file .en
 ```text
 TMDB_API_KEY="xxxxxxxxxxxxxxxx"
 MFP_PSW="xxxxxxxxx"
-MFP_URL="https://mfp-mario.ddns.net"
+MFP_URL="https://mfp.stremio-mario.ddns.net"
 BOTHLINK=true
 ```
 
@@ -286,8 +286,8 @@ Per configurare il plugin AIOStreams è necessario configurare il relativo file 
 📄 Esempio: ./AIOStreams/.env
 ```text
 #queste sono le impostazioni minime per il corretto funzionamento del plugin
-ADDON_ID="aiostreams-mario.duckdns.org"
-BASE_URL=https://aiostreams-mario.duckdns.org
+ADDON_ID="aiostreams.stremio-mario.duckdns.org"
+BASE_URL=https://aiostreams.stremio-mario.duckdns.org
 SECRET_KEY=36148382b90f80430d69075df9848eee87032d16fc4c03fe9ca7ce53b7028973  (può essere generata con openssl rand -hex 32)
 ADDON_PASSWORD=password_a_scelta
 ```
@@ -344,7 +344,7 @@ docker compose up -d --build
 
 ---
 
-## 🔐 Configurazione degli hostname e gestione SSL con Nginx Proxy Manager (NPM)
+## 🔐 Configurazione dei Proxy Hosts e gestione SSL con Nginx Proxy Manager (NPM)
 
 Per rendere accessibili le tue applicazioni web da internet in modo sicuro, useremo **Nginx Proxy Manager (NPM)**. Questo tool semplifica la gestione dei proxy inversi e automatizza l’ottenimento dei certificati SSL con Let’s Encrypt.
 
@@ -352,10 +352,7 @@ Per rendere accessibili le tue applicazioni web da internet in modo sicuro, user
 
 Assicurati di aver creato il sottodominio/hostname statico su [**duckdns.org**](https://www.duckdns.org) e che punti al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns):
 
-- `mammamia-<tuo-id>.duckdns.org`
-- `mfp-<tuo-id>.duckdns.org`
-- `streamv-<tuo-id>.duckdns.org`
-- `aiostreams-<tuo-id>.duckdns.org`
+- `stremio-<tuo-id>.duckdns.org`
 
 > 🔔 **Suggerimento:** Usa un identificativo unico (`<tuo-id>`) per evitare conflitti con altri utenti DuckDns.
 
@@ -370,7 +367,7 @@ Per permettere il corretto funzionamento di NPM e il rinnovo automatico dei cert
 
 ### 3. Configurazione dei proxy host in Nginx Proxy Manager
 
->🛑 Attenzione!!! Prima di iniziare assicuratevi che http://oci-mm.duckdns.org/ vi riporti alla welcome page di Nginx Proxy Manager.
+>🛑 Attenzione!!! Prima di iniziare assicuratevi che http://stremio-mario.duckdns.org/ vi riporti alla welcome page di Nginx Proxy Manager.
 
 #### Creazione Certificato di tipo Wildcard
 Andremo a generare un certificato rilasciato da Let’s Encrypt, che Nginx Proxy Manager (NPM) rinnoverà automaticamente prima della scadenza. Useremo un singolo certificato di tipo wildcard, valido per *.stremio-mario.duckdns.org, sfruttando la challenge DNS con le API di DuckDNS.
@@ -422,7 +419,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   ```
   ![image](https://github.com/user-attachments/assets/92fea31d-bb8c-49c5-a887-f3d5486c9f7f)
 
-Ripeti questa configurazione per ciascuno dei tre hostname con la rispettiva porta (ad esempio, `mfp-<tuo-id>.duckdns.org` → porta `8888`, ecc.).
+Ripeti questa configurazione per ciascuno dei tre hostname con la rispettiva porta (ad esempio, `mfp.stremio-<tuo-id>.duckdns.org` → porta `8888`, ecc.).
 
 ### 4. Verifica e manutenzione
 
