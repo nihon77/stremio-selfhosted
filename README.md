@@ -1,7 +1,7 @@
 # stremio-selfhosted  
-**Stremio Stack con Mammamia, Media Flow Proxy e altro ancora**
+**Stremio Stack con Mammamia, MediaFlow Proxy e altro ancora**
 
-Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **media-flow-proxy**, **StreamV** e altri componenti opzionali.
+Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **mediaflow-proxy**, **StreamV**, **AIOStreams** e altri componenti opzionali.
 
 ---
 
@@ -60,19 +60,24 @@ Poiché molti provider Internet assegnano un **IP pubblico dinamico**, è necess
 > 🔁 Questo setup è fondamentale per permettere a Nginx Proxy Manager di ottenere e rinnovare automaticamente i certificati SSL tramite Let’s Encrypt.
 
 
-### 🔐 Creazione degli hostname su No-IP
+### 🔐 Creazione degli hostname su DuckDns
 
-Per accedere alle tue applicazioni da remoto, devi creare 3 hostname pubblici gratuiti su [**duckdns.org**](https://www.duckdns.org).
+Per accedere alle tue applicazioni da remoto, devi creare 1 hostname pubblico gratuito su [**duckdns.org**](https://www.duckdns.org).
 
-> ⚠️ Gli hostname devono essere univoci. Il mio consiglio è quello di aggiungere un identificativo personale (es. il tuo nome o una sigla) per evitare conflitti.
+> ⚠️ L'hostname deve essere univoco. Il mio consiglio è quello di aggiungere un identificativo personale (es. il tuo nome o una sigla) per evitare conflitti.
 
-#### Esempi di hostname personalizzati:
-- `mammamia-mario.duckdns.org`
-- `mfp-mario.duckdns.org`
-- `streamv-mario.duckdns.org`
-- `aiostreams-mario.duckdns.org`
+#### Esempi di hostname personalizzato:
+- `stremio-mario.duckdns.org`
 
 Puoi ovviamente scegliere qualsiasi nome, purché sia disponibile e facile da ricordare.
+
+>ℹ️ Poiché **DuckDNS gestisce wildcard per ogni sottodominio**, non appena creiamo uno hostname come **stremio-mario.duckdns.org** possiamo—utilizzando Nginx e generando un certificato valido per *.stremio-mario.duckdns.org—ospitare sulla nostra macchina più servizi sotto domini diversi. 
+
+#### Esempi di hostname che andremo a creare su Nginx:
+- `mammamia.stremio-mario.duckdns.org`
+- `mfp.stremio-mario.duckdns.org`
+- `streamv.stremio-mario.duckdns.org`
+- `aiostreams.stremio-mario.duckdns.org`
 
 Questi hostname punteranno sempre al tuo NAS anche se il tuo IP cambia.  
 Il tutto è possibile installando un piccolo agente (Dynamic DNS client) che aggiorna automaticamente il record DNS.
@@ -98,18 +103,18 @@ cd <nome-repo>
 | Servizio           | Nome Servizio Docker | Porta interna | Descrizione                              |
 |--------------------|----------------------|---------------|------------------------------------------|
 | **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
-| **[Media Flow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
+| **[MediaFlow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
 | **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
-| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons and debrid services in un solo plugin|
+| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons e servizi debrid in un solo plugin|
 
 >ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
 Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
 
 ---
 
-## 🔧 Configurazione hostname statici con No-IP
+## 🔧 Configurazione hostname statici con DuckDns
 
 Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname che si aggiorna automaticamente ogni volta che il tuo IP cambia. Ecco come fare:
 
@@ -119,28 +124,18 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
 - Clicca su **Sign In With GitHub/Google/QuelloCheVipare** e crea un account gratuito.
 
 
-### 2. Creazione degli hostname (Dynamic DNS)
+### 2. Creazione del Sottodominio (Dynamic DNS)
 
 - Dopo il login, vi ritroverete direttamente nella **Dashboard** di DuckDns. Notate nella sezione in alto il vostro token identificatvo che utilizzeremo nel .env del container duckdns.
 - Inserisci il nome host, ad esempio:
 
-  - `mammamia-mario`
+  - `stremio-mario`
   
   Scegli un nome unico che ti permetta di riconoscerlo facilmente.
 - Premi **Add Domain**.
 - Nel campo **Current IP**, vedrai il tuo IP pubblico attuale (se errato, correggilo con quello giusto).
 
 <img width="1818" alt="Screenshot 2025-07-03 at 11 23 30" src="https://github.com/user-attachments/assets/f44d2ab9-ce39-43ff-b61a-1b204a266711" />
-
-### 3. Ripeti per gli altri due hostname
-
-- Crea altri due hostname per:
-
-  - `mfp-mario.duckdns.org`
-  - `streamv-mario.duckdns.org`
-  - `aiostreams-mario.duckdns.org`
-
-<img width="1818" alt="Screenshot 2025-07-03 at 11 27 55" src="https://github.com/user-attachments/assets/9d70c20c-985e-410f-9638-a2bf7c7d9988" />
 
 ---
 
@@ -250,7 +245,7 @@ docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
 
-### 🛠️ Creazione dei file .env per MammaMia,Media Flow Proxy,StreamV,AIOStreams e docker-duckdns
+### 🛠️ Creazione dei file .env per MammaMia, MediaFlow Proxy, StreamV, AIOStreams e docker-duckdns
 In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
 Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
 
@@ -265,7 +260,7 @@ PROXY=["http://xxxxxxx-rotate:xxxxxxxxx@p.webshare.io:80"]
 FORWARDPROXY=http://xxxxxxx-rotate:xxxxxxxx@p.webshare.io:80/
 ```
 
-**2. .env per Media Flow Proxy**
+**2. .env per MediaFlow Proxy**
 Per configurare il modulo Media Flow Proxy è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./mfp/.env
@@ -298,12 +293,12 @@ ADDON_PASSWORD=password_a_scelta
 ```
 
 **5. .env per DuckDNS Updater**
-Per configurare correttamente il client DDNS, è necessario un file .env contenente le credenziali e gli hostname associati al tuo account DuckDns.
+Per configurare correttamente il client DDNS, è necessario un file .env contenente le credenziali e il sottodominio associati al tuo account DuckDns.
 
 📄 Esempio: ./duckdns-updater/.env
 ```text
 # File .env per il client DDNS
-SUBDOMAINS=mammamia,mfp,streamv
+SUBDOMAINS=stremio-mario
 TOKEN=IL_TUO_TOKEN
 TZ=Europe/Rome
 ```
@@ -316,7 +311,7 @@ chmod 600 ./duckdns-updater/.env
 
 🔁 Ricorda di sostituire:
 IL_TUO_TOKEN → con il token visibile sulla Dashboard di DuckDns.
-SUBDOMAINS → con i tuoi hostname specifici separati da virgole (host1,host2 ecc senza .duckdns.org).
+SUBDOMAINS → con il sottodominio specifico (senza .duckdns.org).
 
 
 ### 🏗️ Build delle immagini e avvio dei container
@@ -353,9 +348,9 @@ docker compose up -d --build
 
 Per rendere accessibili le tue applicazioni web da internet in modo sicuro, useremo **Nginx Proxy Manager (NPM)**. Questo tool semplifica la gestione dei proxy inversi e automatizza l’ottenimento dei certificati SSL con Let’s Encrypt.
 
-### 1. Creazione dei tre hostname su DuckDns
+### 1. Creazione del sottodominio su DuckDns
 
-Assicurati di aver creato 4 hostname statici su [**duckdns.org**](https://www.duckdns.org) che puntino al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns):
+Assicurati di aver creato il sottodominio/hostname statico su [**duckdns.org**](https://www.duckdns.org) e che punti al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns):
 
 - `mammamia-<tuo-id>.duckdns.org`
 - `mfp-<tuo-id>.duckdns.org`
@@ -375,10 +370,31 @@ Per permettere il corretto funzionamento di NPM e il rinnovo automatico dei cert
 
 ### 3. Configurazione dei proxy host in Nginx Proxy Manager
 
-Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi:
+>🛑 Attenzione!!! Prima di iniziare assicuratevi che http://oci-mm.duckdns.org/ vi riporti alla welcome page di Nginx Proxy Manager.
+
+#### Creazione Certificato di tipo Wildcard
+Andremo a generare un certificato rilasciato da Let’s Encrypt, che Nginx Proxy Manager (NPM) rinnoverà automaticamente prima della scadenza. Useremo un singolo certificato di tipo wildcard, valido per *.stremio-mario.duckdns.org, sfruttando la challenge DNS con le API di DuckDNS.
+
 - **accedi ad http://<ip-tuo-server>:8181** (al primo accesso le credenziali di default sono **Email: admin@example.com Password: changeme**. Vi verrà chiesto di modificarle)
+- Dalla barra di menu **SSL Certificates** → **Add SSL Certificate**
+- Inserisci i due domini:
+  - stremio-mario.duckdns.org
+  - *.stremio-mario.duckdns.org
+- Seleziona Use a DNS Challenge, scegli DuckDNS come provider e inserisci il tuo Token API.
+- Inserisci un indirizzo email valido per la registrazione SSL
+- Imposta Propagation Seconds su 300 per sicurezza.
+- Accetta i Termini di Let’s Encrypt e clicca su Save.
+
+>⚠️ NPM + DuckDNS a volte fallisce: alcuni utenti segnalano errori nel DNS challenge su DuckDNS . Tuttavia, molte guide e utenti confermano che con i settaggi corretti funziona.. a me ha funzionato... quindi provate, provate e provate :)
+
+Se il certificato viene correttamente generato dovreste vedere lo stato dello stesso a **Disabled**, questo perchè non risulta ancora associato a nessun Proxy Host.
+
+
+#### Creazione Proxy Host
+Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi:
+
 - **Dalla barra di menu selezionate **Hosts** → **Proxy Hosts** → **Add New Proxy**
-- **Domain Names:** inserisci l’hostname corrispondente (es. `mammamia-<tuo-id>.duckdns.org`)
+- **Domain Names:** inserisci l’hostname corrispondente (es. `mammamia.stremio-<tuo id>.duckdns.org`)
 - **Scheme:** `http`
 - **Forward Hostname / IP:** il mome del servizio cosi come configurato nel docker-compose ovvero mammmia, mediaflow_proxy e streamv
 - **Forward Port:** la porta interna dove l’app è in ascolto (es. `8080` per Mammamia, `8888` per mediaflow_proxy, `7860` per streamv e `3000` per aiostreams)
@@ -392,9 +408,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
   - **Enable SSL**
   - **Force SSL**
   - **HTTP/2 Support**
-  - Spunta **Request a new SSL certificate from Let's Encrypt**
-  - Accetta i Termini di servizio di Let’s Encrypt
-  - Inserisci un indirizzo email valido per la registrazione SSL
+  - In **SSL certificate** il certificato creato in precedenza
   ![image](https://github.com/user-attachments/assets/6f0ef193-45d3-48c8-a6be-7711986f7054)
 
 - **Nel tab Advanced** aggiungete queste configurazioni :
