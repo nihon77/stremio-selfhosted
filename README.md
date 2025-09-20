@@ -1,7 +1,7 @@
 # stremio-selfhosted  
 **Stremio Stack con Mammamia, MediaFlow Proxy e altro ancora**
 
-Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **mediaflow-proxy**, **StreamV**, **AIOStreams** e altri componenti opzionali.
+Questo repository contiene istruzioni, configurazioni e suggerimenti per il self-hosting sul proprio NAS domestico di un'intera istanza privata di Stremio, con plugin **Mammamia**, **mediaflow-proxy**, **StreamVix** e altri componenti opzionali.
 
 ---
 
@@ -50,14 +50,19 @@ Hai deciso di configurare una tua istanza privata di Mammamia e Media Flow Proxy
 
 ### 🌍 Accesso remoto con IP dinamico + Port Forwarding
 
+> 💡 **Nota:**  
+> L'apertura delle porte sul router e il relativo port forwarding **non sono necessari** se non hai intenzione di accedere al tuo stack Stremio da fuori casa. Se usi i servizi solo all'interno della rete locale, puoi evitare questa configurazione.
+
+> 💡 **Bonus:** 
+> [xlab992](https://github.com/xlab992) ha creato un'ottima guida per accedere in remoto al tuo NAS senza dover aprire porte sul router, usando **Tailscale**.
+> La trovi qui: [Accesso remoto al NAS con Tailscale](https://github.com/xlab992/selfhost)
+
 Poiché molti provider Internet assegnano un **IP pubblico dinamico**, è necessario un sistema per mantenere accessibile il tuo server anche quando l’IP cambia.
 - Un **IP pubblico** (va bene anche se dinamico).
 - Un account gratuito su [**duckdns.org**](https://www.duckdns.org) per creare **hostname statici** che puntano sempre al tuo NAS.
 - Il tuo router deve eseguire un **Port Forwarding**:
   - Porta **80** (HTTP) → verso la **porta 8080** del tuo NAS
   - Porta **443** (HTTPS) → verso la **porta 8433** del tuo NAS
-
-> 🔁 Questo setup è fondamentale per permettere a Nginx Proxy Manager di ottenere e rinnovare automaticamente i certificati SSL tramite Let’s Encrypt.
 
 
 ### 🔐 Creazione degli hostname su DuckDns
@@ -79,8 +84,9 @@ Puoi ovviamente scegliere qualsiasi nome, purché sia disponibile e facile da ri
 - `streamv.stremio-mario.duckdns.org`
 - `aiostreams.stremio-mario.duckdns.org`
 
-Questi hostname punteranno sempre al tuo NAS anche se il tuo IP cambia.  
-Il tutto è possibile installando un piccolo agente (Dynamic DNS client) che aggiorna automaticamente il record DNS.
+Nel caso in cui hai intenzione di usare il tuo stack Stremio solo sulla rete locale, l'hostname `*.stremio-mario.duckdns.org` dovrà essere configurto con l'indirizzo IP locale del tuo NAS (es. 192.168.1.x) all'interno della rete domestica.
+Se, invece, utilizzi il tuo stack Stremio da remoto, gli hostname punteranno all'indirizzo IP pubblico del tuo Router.
+In questo caso è necessario installare l'agente (Dynamic DNS client) che aggiorna automaticamente il record DNS in base al tuo IP pubblico anche se dovesse cambiare nel tempo.
 
 ### 🍴 Consigliato: fai un fork del repository
 
@@ -105,13 +111,11 @@ cd <nome-repo>
 | **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
 | **[MediaFlow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
 | **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
-| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181 | Reverse proxy + certificati Let's Encrypt |
+| **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181(**) | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
-| **[AIOStreams](https://github.com/Viren070/AIOStreams)** |aiostreams |3000(*)        | multipli Stremio addons e servizi debrid in un solo plugin|
 
->ℹ️ (*)Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host.
-Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
-
+>ℹ️ (*) Le **porte elencate (tranne quelle di Nginx Proxy Manager)** sono **interne alla rete Docker** e **non sono esposte direttamente** sulla macchina host. Questo significa che i servizi **non sono accessibili dall’esterno se non tramite Nginx Proxy Manager**, che funge da gateway sicuro con supporto a **HTTPS e Let's Encrypt**.
+>ℹ️ (**) Se utilizzi la configurazione per l'accesso solo in locale, potresti modificare le porte per nginx in modo da esporre direttamente le porte 80 e 443 invece delle relative 8080 e 8443.
 ---
 
 ## 🔧 Configurazione hostname statici con DuckDns
@@ -133,7 +137,7 @@ Se il tuo IP pubblico è dinamico, DuckDns ti permette di associare un hostname 
   
   Scegli un nome unico che ti permetta di riconoscerlo facilmente.
 - Premi **Add Domain**.
-- Nel campo **Current IP**, vedrai il tuo IP pubblico attuale (se errato, correggilo con quello giusto).
+- Nel campo **Current IP**, vedrai il tuo IP pubblico attuale (se errato, correggilo con quello giusto). Nel caso in cui il tuo IP sia dinamico, non preoccuparti: il client DuckDns lo aggiornerà automaticamente. Se invece hai deciso di usare il servizio solo in locale, inserisci l'IP locale del tuo NAS (es. 192.168.1.x).
 
 <img width="1266" alt="Screenshot 2025-07-04 at 09 38 28" src="https://github.com/user-attachments/assets/7825a4dc-021e-49c7-908d-cf9d43cba0e0" />
 
@@ -314,19 +318,7 @@ TMDB_API_KEY=
 
 ```
 
-**4. .env per AIOStreams**
-Per configurare il plugin AIOStreams è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
-
-📄 Esempio: ./AIOStreams/.env
-```text
-#queste sono le impostazioni minime per il corretto funzionamento del plugin
-ADDON_ID="aiostreams.stremio-mario.duckdns.org"
-BASE_URL=https://aiostreams.stremio-mario.duckdns.org
-SECRET_KEY=36148382b90f80430d69075df9848eee87032d16fc4c03fe9ca7ce53b7028973  (può essere generata con openssl rand -hex 32)
-ADDON_PASSWORD=password_a_scelta
-```
-
-**5. .env per DuckDNS Updater**
+**4. .env per DuckDNS Updater (Necessario solo per configurazione con Ip Pubblico e Port Forwarding)**
 Per configurare correttamente il client DDNS, è necessario un file .env contenente le credenziali e il sottodominio associati al tuo account DuckDns.
 
 📄 Esempio: ./duckdns-updater/.env
@@ -349,6 +341,8 @@ SUBDOMAINS → con il sottodominio specifico (senza .duckdns.org).
 
 
 ### 🏗️ Build delle immagini e avvio dei container
+> ⚠️ **Attenzione:**  
+> Se utilizzi lo stack Stremio **solo sulla rete locale** (senza accesso da internet), **non è necessario configurare il servizio `duckdns-updater`**. In questo caso, elimina o commenta la relativa sezione dal file `docker-compose.yml` per evitare container inutili.
 
 Per buildare le immagini (se definite tramite build: con URL GitHub) e avviare tutto in background:
 
@@ -384,20 +378,19 @@ Per rendere accessibili le tue applicazioni web da internet in modo sicuro, user
 
 ### 1. Creazione del sottodominio su DuckDns
 
-Assicurati di aver creato il sottodominio/hostname statico su [**duckdns.org**](https://www.duckdns.org) e che punti al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns):
+Assicurati di aver creato il sottodominio/hostname statico su [**duckdns.org**](https://www.duckdns.org) e che punti al tuo IP pubblico (anche se dinamico, aggiornato tramite l’agent docker-duckdns) o all'IP locale del tuo NAS se usi il servizio solo in locale.:
 
 - `stremio-<tuo-id>.duckdns.org`
 
 > 🔔 **Suggerimento:** Usa un identificativo unico (`<tuo-id>`) per evitare conflitti con altri utenti DuckDns.
 
-### 2. Port Forwarding sul router
+### 2. Port Forwarding sul router (se usi IP pubblico)
+> 🔔 **Suggerimento:** Se utilizzi la configurazione per l'accesso solo in locale, potresti modificare le porte per nginx in modo da esporre direttamente le porte 80 e 443 invece delle relative 8080 e 8443 direttamente nel docker-compose.
 
 Per permettere il corretto funzionamento di NPM e il rinnovo automatico dei certificati SSL:
 
 - Reindirizza la porta **80 (HTTP)** del router verso la porta **8080** del PC/NAS dove gira NPM.
 - Reindirizza la porta **443 (HTTPS)** del router verso la porta **8443** del PC/NAS.
-
-> Questo consente a Let’s Encrypt di verificare il dominio e rilasciare i certificati.
 
 ### 3. Configurazione dei proxy host in Nginx Proxy Manager
 
