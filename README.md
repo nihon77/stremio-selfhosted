@@ -82,7 +82,6 @@ Puoi ovviamente scegliere qualsiasi nome, purché sia disponibile e facile da ri
 - `mammamia.stremio-mario.duckdns.org`
 - `mfp.stremio-mario.duckdns.org`
 - `streamv.stremio-mario.duckdns.org`
-- `aiostreams.stremio-mario.duckdns.org`
 
 Nel caso in cui hai intenzione di usare il tuo stack Stremio solo sulla rete locale, l'hostname `*.stremio-mario.duckdns.org` dovrà essere configurto con l'indirizzo IP locale del tuo NAS (es. 192.168.1.x) all'interno della rete domestica.
 Se, invece, utilizzi il tuo stack Stremio da remoto, gli hostname punteranno all'indirizzo IP pubblico del tuo Router.
@@ -110,7 +109,7 @@ cd <nome-repo>
 |--------------------|----------------------|---------------|------------------------------------------|
 | **[Mammamia](https://github.com/UrloMythus/MammaMia)**|mammamia       | 8080(*)          | Plugin personalizzato per Stremio        |
 | **[MediaFlow Proxy (MFP)](https://github.com/mhdzumair/mediaflow-proxy)**|mediaflow_proxy | 8888(*)   | Proxy per streaming video                |
-| **[StreamV](https://github.com/qwertyuiop8899/StreamV)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
+| **[StreamViX](https://github.com/qwertyuiop8899/streamvix)**|steamv        | 7860(*)          | Web player personalizzato (opzionale)    |
 | **[Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)**|npm | 8080/8443/8181(**) | Reverse proxy + certificati Let's Encrypt |
 | **[docker-duckdns](https://github.com/linuxserver/docker-duckdns)** |duckdns-updater |—         | Aggiorna il DNS dinamicamente            |
 
@@ -249,7 +248,7 @@ docker network create proxy
 ```
 >🔁 Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare in sicurezza.
 
-### 🛠️ Creazione dei file .env per MammaMia, MediaFlow Proxy, StreamV, AIOStreams e docker-duckdns
+### 🛠️ Creazione dei file .env per MammaMia, MediaFlow Proxy, StreamViX e docker-duckdns
 In ogni sotto cartella di questo progetto è presente un file .env_example con tutte le chiavi necessarie per il corretto funzionamento dei vari moduli.
 Per ogni modulo copiare e rinominare il file .env_example in .env. I vari .env dovranno essere modificati in base alle vostre specifiche configurazioni.
 
@@ -277,7 +276,7 @@ FORWARDED_ALLOW_IPS=*
 #FORWARDED_ALLOW_IPS=172.20.0.0
 ```
 
-**3. .env per StreamV**
+**3. .env per StreamViX**
 Per configurare il plugin StreamV è necessario configurare il relativo file .env. Vi rimando al repo del progetto per i dettagli.
 
 📄 Esempio: ./streamv/.env
@@ -304,10 +303,6 @@ FAST_DYNAMIC=0
 # Concurrency for extractor resolution of dynamic events (1-50). Also used as CAP of dynamic links processed.
 DYNAMIC_EXTRACTOR_CONC=10
 
-# TMDB API key override (leave empty to use default)
-TMDB_API_KEY=
-
-
 #############################################
 # Notes:
 # - If both FAST_DYNAMIC=1 and DYNAMIC_EXTRACTOR_CONC are set, FAST wins (extractor skipped).
@@ -316,7 +311,15 @@ TMDB_API_KEY=
 # - Anime providers default to enabled unless explicitly set to false.
 #############################################
 
+# TMDB API key override (leave empty to use default)
+TMDB_API_KEY=
+
+#Per ottenere correttamente i flussi VixSrc in Full HD (forzatura &h=1 + endpoint synthetic) nelle installazioni locali o su VPS è necessario impostare una variabile d'ambiente che dica all'estrattore qual è la BASE URL pubblicamente raggiungibile del tuo addon. Imposta (SENZA lo slash finale):
+ADDON_BASE_URL=http://streamv.stremio-mario.ddns.net
+
 ```
+> 🔔 **Suggerimento:** in fase di configurazione dell'add-on, nella sezione "Installazioni consigliate" seleziona "Locale" e inserisci url e password del Media Flow Proxy. Abilita i provider di tua scelta.
+
 
 **4. .env per DuckDNS Updater (Necessario solo per configurazione con Ip Pubblico e Port Forwarding)**
 Per configurare correttamente il client DDNS, è necessario un file .env contenente le credenziali e il sottodominio associati al tuo account DuckDns.
@@ -424,7 +427,7 @@ Per ogni applicazione, crea un nuovo **Proxy Host** in NPM seguendo questi passi
 - **Domain Names:** inserisci l’hostname corrispondente (es. `mammamia.stremio-<tuo id>.duckdns.org`)
 - **Scheme:** `http`
 - **Forward Hostname / IP:** il mome del servizio cosi come configurato nel docker-compose ovvero mammmia, mediaflow_proxy e streamv
-- **Forward Port:** la porta interna dove l’app è in ascolto (es. `8080` per Mammamia, `8888` per mediaflow_proxy, `7860` per streamv e `3000` per aiostreams)
+- **Forward Port:** la porta interna dove l’app è in ascolto (es. `8080` per Mammamia, `8888` per mediaflow_proxy e `7860` per streamv)
 - Abilita le seguenti opzioni:
   - **Block Common Exploits**
   - **Websockets Support** (se necessario)
